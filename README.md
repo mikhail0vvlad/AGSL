@@ -1,5 +1,7 @@
 # AGSL FX
 
+[![CI](https://github.com/mikhail0vvlad/AGSL/actions/workflows/ci.yml/badge.svg)](https://github.com/mikhail0vvlad/AGSL/actions/workflows/ci.yml)
+
 Библиотека шейдерных эффектов для Jetpack Compose на AGSL. 8 шейдеров, ни одного PNG —
 всё считает GPU.
 

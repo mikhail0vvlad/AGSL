@@ -79,6 +79,14 @@ publishing {
  * Компилирует все AGSL-шейдеры библиотеки настоящим компилятором SkSL до сборки APK.
  * Требует python3 и skia-python:  pip install skia-python
  */
+// Без этого в логе CI видно только «BUILD SUCCESSFUL» — не отличить прошедшие
+// тесты от ненайденных.
+tasks.withType<Test>().configureEach {
+    testLogging {
+        events("passed", "skipped", "failed")
+    }
+}
+
 val validateAgsl = tasks.register<Exec>("validateAgsl") {
     group = "verification"
     description = "Компилирует все AGSL-шейдеры библиотеки (нужен skia-python)"
