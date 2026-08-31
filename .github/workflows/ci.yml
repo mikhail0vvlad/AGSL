@@ -30,13 +30,21 @@ jobs:
       - name: Gradle
         uses: gradle/actions/setup-gradle@v4
 
+      - name: Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
       # AGSL компилируется в рантайме, поэтому опечатка в шейдере обычно всплывает
       # только на устройстве. Skia доступна из Python — гоняем настоящий компилятор
       # SkSL прямо здесь и валим сборку до того, как это увидит пользователь.
       - name: Компиляция AGSL-шейдеров
+        env:
+          PYTHONIOENCODING: utf-8
         run: |
-          python3 -m pip install --quiet skia-python
-          python3 tools/validate_agsl.py
+          python -m pip install --upgrade pip
+          python -m pip install skia-python
+          python tools/validate_agsl.py
 
       - name: Юнит-тесты
         run: ./gradlew :agslfx:testDebugUnitTest

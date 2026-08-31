@@ -21,9 +21,11 @@ import androidx.compose.ui.layout.positionInRoot
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.unit.dp
+import com.mikhailov.agslfx.core.Agsl
 import com.mikhailov.agslfx.core.AgslProgram
 import com.mikhailov.agslfx.core.AgslScope
 import com.mikhailov.agslfx.core.AgslUniform
+import com.mikhailov.agslfx.core.rememberShaderTime
 import com.mikhailov.agslfx.effect.FrostedGlassProgram
 import com.mikhailov.agslfx.effect.LiquidGlassProgram
 import kotlin.math.roundToInt
@@ -66,15 +68,22 @@ public fun Modifier.backdropSource(state: BackdropState): Modifier = this
  * Рисует под содержимым композабла кусок подложки [state], пропущенный через AGSL-программу.
  *
  * @param program программа с `uniform shader content`.
+ * @param animated запускать ли кадровые часы `uTime`. По умолчанию — только если
+ *   программа их объявляет: статичному стеклу перерисовка каждый кадр не нужна.
+ * @param speed множитель скорости времени.
  * @param uniforms дополнительные униформы программы.
  */
 @Composable
 public fun Modifier.backdropEffect(
     state: BackdropState,
     program: AgslProgram,
+    animated: Boolean = AgslUniform.TIME in program.declaredUniforms,
+    speed: Float = 1f,
     uniforms: AgslScope.() -> Unit = {},
 ): Modifier {
-    val shader = remember(program) { program.create() }
+    val shader = Agsl.rememberShader(program)
+    val usesTime = animated && AgslUniform.TIME in program.declaredUniforms
+    val time = rememberShaderTime(usesTime, speed)
     val glassLayer = rememberGraphicsLayer()
     var origin by remember { mutableStateOf(Offset.Zero) }
 
@@ -87,10 +96,13 @@ public fun Modifier.backdropEffect(
                 if (AgslUniform.RESOLUTION in program.declaredUniforms) {
                     shader.setFloatUniform(AgslUniform.RESOLUTION, width, height)
                 }
+                // Читаем время только когда оно вправду нужно: чтение State в draw-фазе
+                // подписывает слой на перерисовку каждый кадр.
+                val now = if (usesTime) time.value else 0f
                 if (AgslUniform.TIME in program.declaredUniforms) {
-                    shader.setFloatUniform(AgslUniform.TIME, 0f)
+                    shader.setFloatUniform(AgslUniform.TIME, now)
                 }
-                AgslScope(shader, size, 0f, this).uniforms()
+                AgslScope(shader, size, now, this).uniforms()
 
                 glassLayer.renderEffect = RenderEffect
                     .createRuntimeShaderEffect(shader, AgslUniform.CONTENT)
