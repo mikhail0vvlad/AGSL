@@ -63,8 +63,8 @@ half4 main(float2 fragCoord) {
 public fun Modifier.meshGradient(
     color0: Color = Color(0xFFFFCC00),
     color1: Color = Color(0xFFFC3F1D),
-    color2: Color = Color(0xFFFFFFFF),
-    color3: Color = Color(0xFF1A1A1A),
+    color2: Color = Color(0xFFFF8A00),
+    color3: Color = Color(0xFFB32000),
     falloff: Float = 2.2f,
     spread: Float = 0.32f,
     speed: Float = 0.35f,

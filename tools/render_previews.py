@@ -98,7 +98,7 @@ PRESETS = {
     "Duotone":         dict(uShadow=[0, 0, 0, 1], uHighlight=[1.0, 0.8, 0.0, 1],
                             uAmount=1.0, uContrast=1.15),
     "Mesh gradient":   dict(uColor0=[1.0, 0.8, 0.0, 1], uColor1=[0.988, 0.247, 0.114, 1],
-                            uColor2=[1, 1, 1, 1], uColor3=[0.102, 0.102, 0.102, 1],
+                            uColor2=[1.0, 0.541, 0.0, 1], uColor3=[0.702, 0.125, 0.0, 1],
                             uFalloff=2.2, uSpread=0.32, uTime=3.0),
     "Animated border": dict(uColor0=[1.0, 0.8, 0.0, 1], uColor1=[0.988, 0.247, 0.114, 1],
                             uColor2=[1, 1, 1, 1], uWidth=6.0, uCornerRadius=48.0,
