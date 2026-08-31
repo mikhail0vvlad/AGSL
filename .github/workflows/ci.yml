@@ -1,0 +1,53 @@
+name: CI
+
+on:
+  push:
+    branches: [master]
+  pull_request:
+  workflow_dispatch:
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    name: Шейдеры, тесты, сборка
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: JDK 17
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+
+      - name: Android SDK
+        uses: android-actions/setup-android@v3
+
+      - name: Gradle
+        uses: gradle/actions/setup-gradle@v4
+
+      # AGSL компилируется в рантайме, поэтому опечатка в шейдере обычно всплывает
+      # только на устройстве. Skia доступна из Python — гоняем настоящий компилятор
+      # SkSL прямо здесь и валим сборку до того, как это увидит пользователь.
+      - name: Компиляция AGSL-шейдеров
+        run: |
+          python3 -m pip install --quiet skia-python
+          python3 tools/validate_agsl.py
+
+      - name: Юнит-тесты
+        run: ./gradlew :agslfx:testDebugUnitTest
+
+      - name: Сборка библиотеки и демо
+        run: ./gradlew :agslfx:assembleDebug :demo:assembleDebug
+
+      - name: Отчёты о тестах
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-reports
+          path: agslfx/build/reports/tests/
+          if-no-files-found: ignore

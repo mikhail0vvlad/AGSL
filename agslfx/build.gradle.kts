@@ -30,6 +30,14 @@ android {
         compose = true
     }
 
+    testOptions {
+        unitTests {
+            // AgslProgram ссылается на android.graphics.RuntimeShader в сигнатуре create().
+            // Заглушки android.jar это переживают, пока тест не вызывает сам create().
+            isReturnDefaultValues = true
+        }
+    }
+
     publishing {
         singleVariant("release") {
             withSourcesJar()
@@ -52,6 +60,8 @@ dependencies {
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.ui.tooling.preview)
     debugImplementation(libs.androidx.ui.tooling)
+
+    testImplementation(libs.junit)
 }
 
 publishing {
@@ -69,10 +79,21 @@ publishing {
  * Компилирует все AGSL-шейдеры библиотеки настоящим компилятором SkSL до сборки APK.
  * Требует python3 и skia-python:  pip install skia-python
  */
-tasks.register<Exec>("validateAgsl") {
+val validateAgsl = tasks.register<Exec>("validateAgsl") {
     group = "verification"
     description = "Компилирует все AGSL-шейдеры библиотеки (нужен skia-python)"
     val python = if (System.getProperty("os.name").startsWith("Windows")) "python" else "python3"
     commandLine(python, rootProject.file("tools/validate_agsl.py").absolutePath)
     isIgnoreExitValue = false
+
+    // Шейдеры меняются только в исходниках — без этого задача гоняется на каждый check.
+    inputs.dir(layout.projectDirectory.dir("src/main/kotlin"))
+    inputs.file(rootProject.file("tools/validate_agsl.py"))
+    outputs.upToDateWhen { true }
+}
+
+// Локально skia-python есть не у всех, и заваливать этим сборку невежливо.
+// На CI переменная выставлена, и валидация обязательна.
+if (providers.environmentVariable("CI").isPresent) {
+    tasks.named("check") { dependsOn(validateAgsl) }
 }
