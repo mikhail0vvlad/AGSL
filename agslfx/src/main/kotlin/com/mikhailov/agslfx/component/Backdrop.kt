@@ -111,7 +111,7 @@ public fun Modifier.backdropEffect(
  *
  * ```
  * val backdrop = rememberBackdrop()
- * Box(Modifier.fillMaxSize().auroraBackground().backdropSource(backdrop)) {
+ * Box(Modifier.fillMaxSize().meshGradient().backdropSource(backdrop)) {
  *     Box(Modifier.size(240.dp, 140.dp).liquidGlassBackdrop(backdrop))
  * }
  * ```

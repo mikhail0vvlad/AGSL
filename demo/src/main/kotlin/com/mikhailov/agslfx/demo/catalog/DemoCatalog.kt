@@ -7,12 +7,10 @@ import androidx.compose.animation.core.infiniteRepeatable
 import androidx.compose.animation.core.rememberInfiniteTransition
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.gestures.detectDragGestures
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.offset
@@ -23,7 +21,6 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableFloatStateOf
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
@@ -35,13 +32,8 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.mikhailov.agslfx.background.AuroraProgram
 import com.mikhailov.agslfx.background.MeshGradientProgram
-import com.mikhailov.agslfx.background.StarfieldProgram
-import com.mikhailov.agslfx.background.auroraBackground
 import com.mikhailov.agslfx.background.meshGradient
-import com.mikhailov.agslfx.background.starfield
-import com.mikhailov.agslfx.component.DissolveVisibility
 import com.mikhailov.agslfx.component.ShimmerPlaceholder
 import com.mikhailov.agslfx.component.backdropSource
 import com.mikhailov.agslfx.component.liquidGlassBackdrop
@@ -51,26 +43,14 @@ import com.mikhailov.agslfx.decor.AnimatedBorderProgram
 import com.mikhailov.agslfx.decor.LiquidFillProgram
 import com.mikhailov.agslfx.decor.animatedBorder
 import com.mikhailov.agslfx.decor.liquidFill
-import com.mikhailov.agslfx.effect.CrtProgram
-import com.mikhailov.agslfx.effect.DissolveProgram
 import com.mikhailov.agslfx.effect.DuotoneProgram
-import com.mikhailov.agslfx.effect.FilmGrainProgram
 import com.mikhailov.agslfx.effect.FrostedGlassProgram
-import com.mikhailov.agslfx.effect.GlitchProgram
-import com.mikhailov.agslfx.effect.HalftoneProgram
 import com.mikhailov.agslfx.effect.LiquidGlassProgram
-import com.mikhailov.agslfx.effect.PixelateProgram
 import com.mikhailov.agslfx.effect.ShimmerProgram
 import com.mikhailov.agslfx.effect.WaterRippleProgram
-import com.mikhailov.agslfx.effect.crt
-import com.mikhailov.agslfx.effect.dissolve
 import com.mikhailov.agslfx.effect.duotone
-import com.mikhailov.agslfx.effect.filmGrain
 import com.mikhailov.agslfx.effect.frostedGlass
-import com.mikhailov.agslfx.effect.glitch
-import com.mikhailov.agslfx.effect.halftone
 import com.mikhailov.agslfx.effect.liquidGlass
-import com.mikhailov.agslfx.effect.pixelate
 import com.mikhailov.agslfx.effect.shimmer
 import com.mikhailov.agslfx.effect.touchRipple
 import com.mikhailov.agslfx.demo.ui.SampleArtwork
@@ -125,75 +105,6 @@ val DemoCatalog: List<DemoEntry> = listOf(
                     width = p.f("width"),
                     speed = p.f("speed"),
                     angleRadians = p.f("angle"),
-                )
-            )
-        },
-    ),
-
-    DemoEntry(
-        id = "grain",
-        title = "Film grain",
-        description = "Плёночное зерно. Шум привязан к сетке пикселей и обновляется " +
-            "с частотой 24 кадра — как настоящая киноплёнка, а не как дрожащий телевизор.",
-        group = GROUP_CONTENT,
-        program = FilmGrainProgram,
-        params = listOf(
-            DemoParam("intensity", "Сила", 0f, 0.6f, 0.16f),
-            DemoParam("size", "Размер зерна", 1f, 6f, 1.5f),
-            DemoParam("bias", "Только полутона", 0f, 1f, 0.6f),
-        ),
-        preview = { p, m ->
-            SampleArtwork(
-                m.filmGrain(
-                    intensity = p.f("intensity"),
-                    size = p.f("size"),
-                    midtoneBias = p.f("bias"),
-                )
-            )
-        },
-    ),
-
-    DemoEntry(
-        id = "glitch",
-        title = "Glitch",
-        description = "Построчный сдвиг блоков плюс расхождение RGB-каналов. " +
-            "Рисунок сбоя детерминирован по хешу от номера строки и кадра.",
-        group = GROUP_CONTENT,
-        program = GlitchProgram,
-        params = listOf(
-            DemoParam("intensity", "Сила", 0f, 1f, 0.5f),
-            DemoParam("block", "Высота блока", 4f, 80f, 24f),
-            DemoParam("split", "Расхождение RGB", 0f, 24f, 6f),
-        ),
-        preview = { p, m ->
-            SampleArtwork(
-                m.glitch(
-                    intensity = p.f("intensity"),
-                    blockSizePx = p.f("block"),
-                    channelSplitPx = p.f("split"),
-                )
-            )
-        },
-    ),
-
-    DemoEntry(
-        id = "dissolve",
-        title = "Dissolve",
-        description = "Растворение по fbm-шуму с раскалённой кромкой. " +
-            "Прогресс можно анимировать — получается «сгорающий» переход между состояниями.",
-        group = GROUP_CONTENT,
-        program = DissolveProgram,
-        params = listOf(
-            DemoParam("progress", "Прогресс", 0f, 1f, 0.45f),
-            DemoParam("scale", "Масштаб шума", 1f, 20f, 6f),
-            DemoParam("edge", "Ширина кромки", 0.01f, 0.3f, 0.09f),
-        ),
-        preview = { p, m ->
-            SampleArtwork(
-                m.dissolve(
-                    progress = p.f("progress"),
-                    scale = p.f("scale"),
-                    edgeWidth = p.f("edge"),
                 )
             )
         },
@@ -289,98 +200,6 @@ val DemoCatalog: List<DemoEntry> = listOf(
     ),
 
     DemoEntry(
-        id = "halftone",
-        title = "Halftone",
-        description = "Полиграфический растр: радиус точки на повёрнутой сетке " +
-            "зависит от яркости пикселя.",
-        group = GROUP_CONTENT,
-        program = HalftoneProgram,
-        params = listOf(
-            DemoParam("cell", "Шаг сетки", 3f, 30f, 10f),
-            DemoParam("angle", "Поворот", 0f, 1.57f, 0.4f),
-            DemoParam("amount", "Сила", 0f, 1f, 1f),
-        ),
-        preview = { p, m ->
-            SampleArtwork(
-                m.halftone(
-                    cellSizePx = p.f("cell"),
-                    angleRadians = p.f("angle"),
-                    amount = p.f("amount"),
-                )
-            )
-        },
-    ),
-
-    DemoEntry(
-        id = "pixelate",
-        title = "Pixelate",
-        description = "Квантование координат сэмплирования плюс зазор между «пикселями» — " +
-            "получается LED-панель.",
-        group = GROUP_CONTENT,
-        program = PixelateProgram,
-        params = listOf(
-            DemoParam("size", "Размер пикселя", 2f, 60f, 16f),
-            DemoParam("gap", "Зазор", 0f, 0.6f, 0.12f),
-        ),
-        preview = { p, m ->
-            SampleArtwork(
-                m.pixelate(
-                    sizePx = p.f("size"),
-                    gap = p.f("gap"),
-                )
-            )
-        },
-    ),
-
-    DemoEntry(
-        id = "crt",
-        title = "CRT",
-        description = "Кинескоп: бочкообразная дисторсия, расхождение каналов к краям, " +
-            "строчная развёртка, виньетка и лёгкое мерцание.",
-        group = GROUP_CONTENT,
-        program = CrtProgram,
-        params = listOf(
-            DemoParam("curvature", "Кривизна", 0f, 1.2f, 0.4f),
-            DemoParam("scanline", "Строки", 0f, 1f, 0.35f),
-            DemoParam("density", "Плотность строк", 0.3f, 4f, 1.6f),
-            DemoParam("aberration", "Аберрация", 0f, 6f, 1.6f),
-        ),
-        preview = { p, m ->
-            SampleArtwork(
-                m.crt(
-                    curvature = p.f("curvature"),
-                    scanline = p.f("scanline"),
-                    density = p.f("density"),
-                    aberrationPx = p.f("aberration"),
-                )
-            )
-        },
-    ),
-
-    DemoEntry(
-        id = "aurora",
-        title = "Aurora",
-        description = "Северное сияние из двух лент fbm-шума. Дизеринг по хешу убирает " +
-            "полосы на плавных градиентах.",
-        group = GROUP_BACKGROUND,
-        program = AuroraProgram,
-        params = listOf(
-            DemoParam("intensity", "Насыщенность", 0f, 1.5f, 0.9f),
-            DemoParam("scale", "Масштаб", 0.5f, 6f, 2.2f),
-            DemoParam("speed", "Скорость", 0.1f, 3f, 1f),
-        ),
-        preview = { p, m ->
-            Box(
-                m.auroraBackground(
-                    intensity = p.f("intensity"),
-                    scale = p.f("scale"),
-                    speed = p.f("speed"),
-                )
-            )
-        },
-    ),
-
-    DemoEntry(
         id = "mesh",
         title = "Mesh gradient",
         description = "Четыре цветные точки плавают по площади, цвет пикселя — среднее " +
@@ -398,29 +217,6 @@ val DemoCatalog: List<DemoEntry> = listOf(
                     falloff = p.f("falloff"),
                     spread = p.f("spread"),
                     speed = p.f("speed"),
-                )
-            )
-        },
-    ),
-
-    DemoEntry(
-        id = "starfield",
-        title = "Starfield",
-        description = "Три параллаксных слоя звёзд на хеш-сетке, у самых ярких " +
-            "включается крестообразный блик.",
-        group = GROUP_BACKGROUND,
-        program = StarfieldProgram,
-        params = listOf(
-            DemoParam("density", "Плотность", 4f, 40f, 14f),
-            DemoParam("drift", "Дрейф", 0f, 2f, 0.35f),
-            DemoParam("twinkle", "Мерцание", 0f, 1f, 0.9f),
-        ),
-        preview = { p, m ->
-            Box(
-                m.starfield(
-                    density = p.f("density"),
-                    drift = p.f("drift"),
-                    twinkle = p.f("twinkle"),
                 )
             )
         },
@@ -542,41 +338,6 @@ val DemoCatalog: List<DemoEntry> = listOf(
     ),
 
     DemoEntry(
-        id = "dissolve-visibility",
-        title = "DissolveVisibility",
-        description = "Замена AnimatedVisibility: появление и исчезновение через " +
-            "шумовую маску вместо альфы.",
-        group = GROUP_COMPONENTS,
-        program = DissolveProgram,
-        hint = "Нажмите, чтобы переключить",
-        params = emptyList(),
-        preview = { _, m ->
-            var visible by remember { mutableStateOf(true) }
-            Box(
-                modifier = m.clickable { visible = !visible },
-                contentAlignment = Alignment.Center,
-            ) {
-                DissolveVisibility(
-                    visible = visible,
-                    modifier = Modifier
-                        .fillMaxWidth(0.75f)
-                        .height(150.dp)
-                        .clip(RoundedCornerShape(24.dp)),
-                ) {
-                    SampleArtwork(Modifier.fillMaxSize())
-                }
-                if (!visible) {
-                    Text(
-                        "нажмите ещё раз",
-                        color = Color(0xFF6C7590),
-                        fontSize = 13.sp,
-                    )
-                }
-            }
-        },
-    ),
-
-    DemoEntry(
         id = "backdrop",
         title = "Backdrop glass",
         description = "Стекло, которое действительно преломляет ФОН, а не свой контент. " +
@@ -605,12 +366,7 @@ val DemoCatalog: List<DemoEntry> = listOf(
 
             Box(
                 modifier = m
-                    .auroraBackground(
-                        colorA = Color(0xFF1F6FB2),
-                        colorB = Color(0xFF7A3FD1),
-                        colorC = Color(0xFFFF6FA5),
-                        speed = 0.6f + phase * 0f,
-                    )
+                    .meshGradient(speed = 0.35f + phase * 0f)
                     .backdropSource(backdrop),
                 contentAlignment = Alignment.Center,
             ) {
