@@ -1,9 +1,28 @@
+import java.util.Properties
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.compose)
 }
+
+// Ключ подписи в репозиторий не попадает. Чтобы собрать подписанный release,
+// положите keystore куда удобно и опишите его в local.properties (файл в .gitignore):
+//
+//   signing.storeFile=demo/demo-signing.jks
+//   signing.storePassword=...
+//   signing.keyAlias=demo
+//   signing.keyPassword=...
+//
+// Без этих строк release собирается неподписанным, а debug — обычным отладочным
+// ключом Android SDK, то есть витрину всё равно можно поставить на телефон.
+val signingProps = Properties().apply {
+    val file = rootProject.file("local.properties")
+    if (file.exists()) file.inputStream().use { load(it) }
+}
+val signingStore = signingProps.getProperty("signing.storeFile")
+    ?.let(rootProject::file)
+    ?.takeIf { it.exists() }
 
 android {
     namespace = "com.mikhailov.agslfx.demo"
@@ -18,24 +37,28 @@ android {
     }
 
     signingConfigs {
-        // Демо-ключ лежит в репозитории намеренно: чтобы собранный release-APK
-        // можно было сразу поставить на телефон и посмотреть эффекты.
-        create("demo") {
-            storeFile = rootProject.file("demo/demo-signing.jks")
-            storePassword = "agslfx"
-            keyAlias = "demo"
-            keyPassword = "agslfx"
+        if (signingStore != null) {
+            create("demo") {
+                storeFile = signingStore
+                storePassword = signingProps.getProperty("signing.storePassword")
+                keyAlias = signingProps.getProperty("signing.keyAlias")
+                keyPassword = signingProps.getProperty("signing.keyPassword")
+            }
         }
     }
 
     buildTypes {
         debug {
-            signingConfig = signingConfigs.getByName("demo")
+            if (signingStore != null) {
+                signingConfig = signingConfigs.getByName("demo")
+            }
         }
         release {
             isMinifyEnabled = true
             isShrinkResources = true
-            signingConfig = signingConfigs.getByName("demo")
+            if (signingStore != null) {
+                signingConfig = signingConfigs.getByName("demo")
+            }
             proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
         }
     }

@@ -268,8 +268,18 @@ python3 tools/render_previews.py   # рендерит docs/preview/*.png и ко
 ./gradlew :agslfx:publishToMavenLocal
 ```
 
-Готовый подписанный релизный APK лежит в [`artifacts/agsl-fx-demo.apk`](artifacts/agsl-fx-demo.apk) —
-ставится на любой Android 13+.
+Ключ подписи я в репозиторий не кладу. `debug` собирается отладочным ключом Android SDK
+и спокойно ставится на телефон — для витрины этого достаточно. Если нужен подписанный
+`release`, опишите свой keystore в `local.properties` (он в `.gitignore`):
+
+```properties
+signing.storeFile=demo/demo-signing.jks
+signing.storePassword=...
+signing.keyAlias=demo
+signing.keyPassword=...
+```
+
+Без этих строк `release` соберётся неподписанным, а сборка не сломается.
 
 ---
 
