@@ -3,7 +3,12 @@
 Библиотека шейдерных эффектов для Jetpack Compose на **AGSL** (Android Graphics Shading Language)
 и демо-приложение-витрина к ней.
 
-16 шейдеров, ноль растровых ресурсов: всё, что вы видите ниже, целиком посчитано на GPU.
+8 шейдеров, ноль растровых ресурсов: всё, что вы видите ниже, целиком посчитано на GPU.
+
+Набор отобран под фирменный визуальный язык Яндекса — геометрия, чистота, плавность,
+жёлтый акцент. Эффекты, имитирующие аналоговый распад (плёночное зерно, кинескоп, глитч),
+полиграфическое ретро (растр, пиксельная мозаика) и космос (звёзды, северное сияние),
+в набор не входят намеренно.
 
 ![Каталог эффектов](docs/preview/_sheet.png)
 
@@ -13,7 +18,7 @@
 
 | | |
 |---|---|
-| `agslfx` | Android-библиотека: ядро + 16 эффектов + готовые компоненты |
+| `agslfx` | Android-библиотека: ядро + 8 эффектов + готовые компоненты |
 | `demo` | Витрина: галерея, живые слайдеры параметров и исходник каждого шейдера прямо в приложении |
 | `tools` | Оффлайн-компиляция и рендер шейдеров без устройства (см. [«Проверка шейдеров»](#проверка-шейдеров-без-устройства)) |
 
@@ -41,12 +46,10 @@ dependencies {
 Box(Modifier.shimmer())
 
 // живой фон
-Box(Modifier.fillMaxSize().auroraBackground())
+Box(Modifier.fillMaxSize().meshGradient())
 
-// растворение вместо AnimatedVisibility
-DissolveVisibility(visible = isVisible) {
-    ProfileCard()
-}
+// прогресс с волной на поверхности
+Box(Modifier.liquidFill(progress = 0.6f))
 ```
 
 Свой шейдер подключается тем же ядром — писать boilerplate не нужно:
@@ -87,16 +90,10 @@ Box(Modifier.agslEffect(MyProgram) { set("uAmount", 0.5f) })
 | Превью | API | Что делает |
 |---|---|---|
 | <img src="docs/preview/shimmer.png" width="120"> | `Modifier.shimmer()` | Диагональный блик. Основа skeleton-загрузки |
-| <img src="docs/preview/film-grain.png" width="120"> | `Modifier.filmGrain()` | Плёночное зерно, слабее в тенях и светах |
-| <img src="docs/preview/glitch.png" width="120"> | `Modifier.glitch()` | Сдвиг блоков строк + расхождение RGB |
-| <img src="docs/preview/dissolve.png" width="120"> | `Modifier.dissolve(progress)` | Растворение по fbm-шуму с раскалённой кромкой |
-| <img src="docs/preview/water-ripple.png" width="120"> | `Modifier.touchRipple()` | Волна по касанию с преломлением и бликом |
 | <img src="docs/preview/frosted-glass.png" width="120"> | `Modifier.frostedGlass()` | Матовое стекло, 16 отсчётов по золотой спирали |
 | <img src="docs/preview/liquid-glass.png" width="120"> | `Modifier.liquidGlass()` | Стеклянная линза: преломление у краёв + блик на фаске |
 | <img src="docs/preview/duotone.png" width="120"> | `Modifier.duotone()` | Яркость раскладывается между двумя цветами |
-| <img src="docs/preview/halftone.png" width="120"> | `Modifier.halftone()` | Полиграфический растр на повёрнутой сетке |
-| <img src="docs/preview/pixelate.png" width="120"> | `Modifier.pixelate()` | Мозаика с зазором — LED-панель |
-| <img src="docs/preview/crt.png" width="120"> | `Modifier.crt()` | Кинескоп: бочка, строки, аберрация, виньетка |
+| <img src="docs/preview/water-ripple.png" width="120"> | `Modifier.waterRipple()` / `Modifier.touchRipple()` | Волна с преломлением и бликом, по прогрессу или по касанию |
 
 ### Живые фоны
 
@@ -104,9 +101,7 @@ Box(Modifier.agslEffect(MyProgram) { set("uAmount", 0.5f) })
 
 | Превью | API | Что делает |
 |---|---|---|
-| <img src="docs/preview/aurora.png" width="120"> | `Modifier.auroraBackground()` | Северное сияние из двух лент fbm-шума |
 | <img src="docs/preview/mesh-gradient.png" width="120"> | `Modifier.meshGradient()` | Mesh-градиент: 4 плавающие цветные точки |
-| <img src="docs/preview/starfield.png" width="120"> | `Modifier.starfield()` | Три параллаксных слоя мерцающих звёзд |
 
 ### Компоненты и декор
 
@@ -115,8 +110,22 @@ Box(Modifier.agslEffect(MyProgram) { set("uAmount", 0.5f) })
 | <img src="docs/preview/animated-border.png" width="120"> | `Modifier.animatedBorder()` | Вращающаяся коническая обводка со свечением |
 | <img src="docs/preview/liquid-fill.png" width="120"> | `Modifier.liquidFill(progress)` | Прогресс с волной на поверхности |
 | — | `ShimmerPlaceholder()` | Готовый скелетон-заглушка |
-| — | `DissolveVisibility(visible)` | Появление/исчезновение через шумовую маску |
 | — | `Modifier.liquidGlassBackdrop(state)` | Стекло, преломляющее **фон под собой** |
+
+### Палитра
+
+Цветовые дефолты собраны на фирменной палитре: жёлтый `#FFCC00`, красный `#FC3F1D`,
+чёрный и белый. Это именно значения по умолчанию — каждый цвет перекрывается параметром:
+
+```kotlin
+Box(Modifier.duotone())                                   // чёрный → жёлтый
+Box(Modifier.duotone(shadow = Navy, highlight = Cyan))    // ваши цвета
+```
+
+Исключение — `meshGradient`: четыре контрастных цвета в нём замываются в грязь,
+поэтому его четвёрка построена как тёплая гамма от жёлтого к тёмно-красному
+(`#FFCC00`, `#FC3F1D`, `#FF8A00`, `#B32000`) — все переходы остаются внутри
+одного тонового семейства.
 
 ---
 
@@ -160,7 +169,7 @@ val backdrop = rememberBackdrop()
 Box(
     Modifier
         .fillMaxSize()
-        .auroraBackground()
+        .meshGradient()
         .backdropSource(backdrop)          // фон пишется в слой
 ) {
     Box(
@@ -239,7 +248,7 @@ python3 tools/render_previews.py   # рендерит docs/preview/*.png и ко
 agslfx/src/main/kotlin/com/mikhailov/agslfx/
 ├── core/          AgslProgram, PRELUDE, agslEffect/agslBackground, кадровое время
 ├── effect/        эффекты над контентом
-├── background/    генеративные фоны
+├── background/    генеративный фон
 ├── decor/         обводка и прогресс-заливка
 └── component/     готовые компоненты и backdrop-стекло
 
