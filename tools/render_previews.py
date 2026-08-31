@@ -75,9 +75,14 @@ def sample_artwork(size):
         canvas.drawCircle(size * 0.18, size * 0.86, size * 0.42, skia.Paint(Color=0x8C000000))
         canvas.drawCircle(size * 0.55, size * 0.62, size * 0.30, skia.Paint(Color=0x24FFFFFF))
         try:
-            font = skia.Font(skia.Typeface.MakeFromName("DejaVu Sans", skia.FontStyle.Bold()), size * 0.16)
-            text = skia.TextBlob("AGSL", font)
-            canvas.drawTextBlob(text, size * 0.28, size * 0.55, skia.Paint(Color=0xFFFFFFFF))
+            mark = skia.Font(skia.Typeface.MakeFromName("DejaVu Sans", skia.FontStyle.Bold()), size * 0.16)
+            caption = skia.Font(skia.Typeface.MakeFromName("DejaVu Sans", skia.FontStyle.Normal()), size * 0.045)
+            canvas.drawTextBlob(skia.TextBlob("Y&&Y", mark),
+                                (size - mark.measureText("Y&&Y")) / 2, size * 0.54,
+                                skia.Paint(Color=0xFFFFFFFF))
+            canvas.drawTextBlob(skia.TextBlob("YOUNG && YANDEX", caption),
+                                (size - caption.measureText("YOUNG && YANDEX")) / 2, size * 0.60,
+                                skia.Paint(Color=0xD9FFFFFF))
         except Exception:  # шрифта может не быть — превью останется без подписи
             pass
     return surface.makeImageSnapshot()

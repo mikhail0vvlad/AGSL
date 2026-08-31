@@ -66,18 +66,19 @@ fun SampleArtwork(modifier: Modifier = Modifier) {
             verticalArrangement = Arrangement.spacedBy(2.dp),
         ) {
             Text(
-                text = "AGSL",
+                text = "Y&&Y",
                 color = Color.White,
                 fontSize = 44.sp,
                 fontWeight = FontWeight.Black,
                 fontFamily = FontFamily.SansSerif,
             )
             Text(
-                text = "Android Graphics\nShading Language",
+                text = "YOUNG && YANDEX",
                 color = Color.White.copy(alpha = 0.85f),
                 fontSize = 12.sp,
                 textAlign = TextAlign.Center,
                 fontWeight = FontWeight.Medium,
+                letterSpacing = 2.sp,
             )
         }
     }
