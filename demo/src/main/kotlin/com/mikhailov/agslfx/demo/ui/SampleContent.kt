@@ -30,10 +30,10 @@ fun SampleArtwork(modifier: Modifier = Modifier) {
         modifier.background(
             Brush.linearGradient(
                 colors = listOf(
-                    Color(0xFF1B1E4B),
-                    Color(0xFF6A2C86),
-                    Color(0xFFE0574A),
-                    Color(0xFFF7B733),
+                    Color(0xFF000000),
+                    Color(0xFF1A1A1A),
+                    Color(0xFFFC3F1D),
+                    Color(0xFFFFCC00),
                 ),
                 start = Offset.Zero,
                 end = Offset.Infinite,
@@ -43,12 +43,12 @@ fun SampleArtwork(modifier: Modifier = Modifier) {
         Canvas(Modifier.fillMaxSize()) {
             val r = size.minDimension
             drawCircle(
-                color = Color(0xFFFFE29A).copy(alpha = 0.9f),
+                color = Color(0xFFFFCC00).copy(alpha = 0.9f),
                 radius = r * 0.17f,
                 center = Offset(size.width * 0.74f, size.height * 0.26f),
             )
             drawCircle(
-                color = Color(0xFF0B0F2B).copy(alpha = 0.55f),
+                color = Color(0xFF000000).copy(alpha = 0.55f),
                 radius = r * 0.42f,
                 center = Offset(size.width * 0.18f, size.height * 0.86f),
             )

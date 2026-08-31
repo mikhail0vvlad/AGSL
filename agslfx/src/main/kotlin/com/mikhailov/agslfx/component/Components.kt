@@ -20,7 +20,7 @@ import com.mikhailov.agslfx.effect.shimmer
 public fun ShimmerPlaceholder(
     modifier: Modifier = Modifier,
     shape: Shape = RectangleShape,
-    baseColor: Color = Color(0xFF23283A),
+    baseColor: Color = Color(0xFF1A1A1A),
     highlight: Color = Color.White.copy(alpha = 0.35f),
     speed: Float = 0.7f,
 ) {

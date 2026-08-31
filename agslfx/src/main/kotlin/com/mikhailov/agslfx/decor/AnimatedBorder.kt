@@ -60,9 +60,9 @@ half4 main(float2 fragCoord) {
  */
 @Composable
 public fun Modifier.animatedBorder(
-    color0: Color = Color(0xFF00E5FF),
-    color1: Color = Color(0xFFB14BFF),
-    color2: Color = Color(0xFFFF4D8D),
+    color0: Color = Color(0xFFFFCC00),
+    color1: Color = Color(0xFFFC3F1D),
+    color2: Color = Color(0xFFFFFFFF),
     width: Dp = 2.dp,
     cornerRadius: Dp = 20.dp,
     glow: Float = 0.6f,

@@ -108,10 +108,10 @@ fun DetailScreen(
                             .align(Alignment.BottomCenter)
                             .padding(12.dp)
                             .clip(RoundedCornerShape(50))
-                            .background(Color(0xCC0B0E18))
+                            .background(Color(0xCC000000))
                             .padding(horizontal = 14.dp, vertical = 7.dp)
                     ) {
-                        Text(hint, color = Color(0xFFD5DBEC), fontSize = 12.sp)
+                        Text(hint, color = Color(0xFFE6E6E6), fontSize = 12.sp)
                     }
                 }
             }
@@ -170,13 +170,13 @@ fun DetailScreen(
                         .fillMaxWidth()
                         .padding(horizontal = 16.dp)
                         .clip(RoundedCornerShape(14.dp))
-                        .background(Color(0xFF080A12))
+                        .background(Color(0xFF0A0A0A))
                         .horizontalScroll(rememberScrollState())
                         .padding(14.dp)
                 ) {
                     Text(
                         text = entry.program.body.trim(),
-                        color = Color(0xFFB8C6E8),
+                        color = Color(0xFFCCCCCC),
                         fontFamily = FontFamily.Monospace,
                         fontSize = 10.sp,
                         lineHeight = 14.sp,

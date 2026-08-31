@@ -57,8 +57,8 @@ half4 main(float2 fragCoord) {
 @Composable
 public fun Modifier.liquidFill(
     progress: Float,
-    fill: Color = Color(0xFF2B7BFF),
-    track: Color = Color(0xFF11162B),
+    fill: Color = Color(0xFFFFCC00),
+    track: Color = Color(0xFF141414),
     foam: Color = Color.White.copy(alpha = 0.65f),
     amplitude: Float = 0.03f,
     waves: Float = 1.6f,

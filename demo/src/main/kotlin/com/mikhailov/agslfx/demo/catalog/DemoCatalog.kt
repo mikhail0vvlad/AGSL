@@ -241,7 +241,7 @@ val DemoCatalog: List<DemoEntry> = listOf(
                         .fillMaxWidth(0.8f)
                         .height(120.dp)
                         .clip(RoundedCornerShape(p.f("radius").dp))
-                        .background(Color(0xFF141828))
+                        .background(Color(0xFF141414))
                         .animatedBorder(
                             width = p.f("width").dp,
                             cornerRadius = p.f("radius").dp,

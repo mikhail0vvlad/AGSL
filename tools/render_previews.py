@@ -68,11 +68,11 @@ def sample_artwork(size):
     with surface as canvas:
         paint = skia.Paint(Shader=skia.GradientShader.MakeLinear(
             points=[(0.0, 0.0), (float(size), float(size))],
-            colors=[0xFF4B1E1B, 0xFF862C6A, 0xFF4A57E0, 0xFF33B7F7],
+            colors=[0xFF000000, 0xFF1A1A1A, 0xFFFC3F1D, 0xFFFFCC00],
         ))
         canvas.drawPaint(paint)
-        canvas.drawCircle(size * 0.74, size * 0.26, size * 0.17, skia.Paint(Color=0xE6FFE29A))
-        canvas.drawCircle(size * 0.18, size * 0.86, size * 0.42, skia.Paint(Color=0x8C0B0F2B))
+        canvas.drawCircle(size * 0.74, size * 0.26, size * 0.17, skia.Paint(Color=0xE6FFCC00))
+        canvas.drawCircle(size * 0.18, size * 0.86, size * 0.42, skia.Paint(Color=0x8C000000))
         canvas.drawCircle(size * 0.55, size * 0.62, size * 0.30, skia.Paint(Color=0x24FFFFFF))
         try:
             font = skia.Font(skia.Typeface.MakeFromName("DejaVu Sans", skia.FontStyle.Bold()), size * 0.16)
@@ -90,42 +90,27 @@ COMMON = {"uResolution": [R, R], "uTime": 1.6}
 # Значения униформ для превью — повторяют дефолты из публичного API библиотеки.
 PRESETS = {
     "Shimmer":         dict(uHighlight=[1, 1, 1, 0.55], uWidth=0.18, uAngle=0.6, uSpeed=0.6, uTime=0.45),
-    "Film grain":      dict(uIntensity=0.35, uSize=2.0, uMidtoneBias=0.6, uFps=24.0),
-    "Glitch":          dict(uIntensity=0.65, uBlockSize=24.0, uSplit=8.0, uRate=12.0),
-    "Dissolve":        dict(uProgress=0.45, uScale=6.0, uEdge=0.09,
-                            uEdgeColor=[1.0, 0.478, 0.094, 1.0], uSeed=0.0),
     "Water ripple":    dict(uCenter=CENTER, uProgress=0.35, uAmplitude=34.0,
                             uFrequency=12.0, uDecay=0.14),
     "Frosted glass":   dict(uRadius=14.0, uTint=[1, 1, 1, 0.12], uNoise=0.03),
     "Liquid glass":    dict(uCornerRadius=90.0, uThickness=70.0, uRefraction=26.0,
                             uGlare=1.0, uTint=[1, 1, 1, 0.06]),
-    "Duotone":         dict(uShadow=[0.043, 0.063, 0.149, 1], uHighlight=[0.4, 0.878, 1, 1],
+    "Duotone":         dict(uShadow=[0, 0, 0, 1], uHighlight=[1.0, 0.8, 0.0, 1],
                             uAmount=1.0, uContrast=1.15),
-    "Halftone":        dict(uCellSize=10.0, uAngle=0.4, uInk=[0.063, 0.071, 0.102, 1],
-                            uPaper=[0.953, 0.941, 0.906, 1], uAmount=1.0),
-    "Pixelate":        dict(uSize=16.0, uGap=0.12),
-    "CRT":             dict(uCurvature=0.4, uScanline=0.35, uDensity=1.6,
-                            uVignette=0.5, uAberration=1.6, uFlicker=0.06),
-    "Aurora":          dict(uBackground=[0.024, 0.039, 0.094, 1], uColorA=[0.106, 0.478, 0.42, 1],
-                            uColorB=[0.243, 0.357, 0.839, 1], uColorC=[0.722, 0.42, 0.91, 1],
-                            uIntensity=0.9, uScale=2.2, uTime=8.0),
-    "Mesh gradient":   dict(uColor0=[0.357, 0.173, 1, 1], uColor1=[0, 0.831, 1, 1],
-                            uColor2=[1, 0.239, 0.506, 1], uColor3=[1, 0.788, 0.235, 1],
+    "Mesh gradient":   dict(uColor0=[1.0, 0.8, 0.0, 1], uColor1=[0.988, 0.247, 0.114, 1],
+                            uColor2=[1, 1, 1, 1], uColor3=[0.102, 0.102, 0.102, 1],
                             uFalloff=2.2, uSpread=0.32, uTime=3.0),
-    "Starfield":       dict(uBackground=[0.016, 0.016, 0.047, 1], uStarColor=[0.918, 0.949, 1, 1],
-                            uDensity=14.0, uDrift=0.35, uTwinkle=0.9, uTime=4.0),
-    "Animated border": dict(uColor0=[0, 0.898, 1, 1], uColor1=[0.694, 0.294, 1, 1],
-                            uColor2=[1, 0.302, 0.553, 1], uWidth=6.0, uCornerRadius=48.0,
+    "Animated border": dict(uColor0=[1.0, 0.8, 0.0, 1], uColor1=[0.988, 0.247, 0.114, 1],
+                            uColor2=[1, 1, 1, 1], uWidth=6.0, uCornerRadius=48.0,
                             uGlow=0.8, uTime=1.0),
-    "Liquid fill":     dict(uFill=[0.169, 0.482, 1, 1], uTrack=[0.067, 0.086, 0.169, 1],
+    "Liquid fill":     dict(uFill=[1.0, 0.8, 0.0, 1], uTrack=[0.078, 0.078, 0.078, 1],
                             uFoam=[1, 1, 1, 0.65], uProgress=0.6, uAmplitude=0.05,
                             uWaves=1.6, uVertical=0.0, uTime=2.0),
 }
 
 ORDER = [
-    "Aurora", "Mesh gradient", "Starfield", "Liquid fill", "Animated border",
-    "Shimmer", "Film grain", "Glitch", "Dissolve", "Water ripple",
-    "Frosted glass", "Liquid glass", "Duotone", "Halftone", "Pixelate", "CRT",
+    "Mesh gradient", "Liquid fill", "Animated border", "Shimmer",
+    "Water ripple", "Frosted glass", "Liquid glass", "Duotone",
 ]
 
 
@@ -160,7 +145,7 @@ def main():
 
         surface = skia.Surface(SIZE, SIZE)
         with surface as canvas:
-            canvas.clear(0xFF07080F)
+            canvas.clear(0xFF000000)
             canvas.drawPaint(skia.Paint(Shader=shader))
         image = surface.makeImageSnapshot()
 
@@ -177,7 +162,7 @@ def main():
     sheet_h = rows * (SIZE + label) + (rows + 1) * pad
     sheet = skia.Surface(sheet_w, sheet_h)
     with sheet as canvas:
-        canvas.clear(0xFF07080F)
+        canvas.clear(0xFF000000)
         font = None
         try:
             font = skia.Font(skia.Typeface.MakeFromName("DejaVu Sans", skia.FontStyle.Normal()), 18)
@@ -189,7 +174,7 @@ def main():
             y = pad + row * (SIZE + label + pad)
             canvas.drawImage(image, x, y)
             if font is not None:
-                canvas.drawString(name, x + 2, y + SIZE + 19, font, skia.Paint(Color=0xFFAAB0C4))
+                canvas.drawString(name, x + 2, y + SIZE + 19, font, skia.Paint(Color=0xFF8C8C8C))
     sheet.makeImageSnapshot().save(str(OUT / "_sheet.png"), skia.kPNG)
     print(f"\nконтактный лист: docs/preview/_sheet.png ({len(rendered)} эффектов)")
 

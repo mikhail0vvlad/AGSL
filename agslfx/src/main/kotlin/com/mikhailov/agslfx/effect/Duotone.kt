@@ -41,8 +41,8 @@ half4 main(float2 fragCoord) {
  */
 @Composable
 public fun Modifier.duotone(
-    shadow: Color = Color(0xFF0B1026),
-    highlight: Color = Color(0xFF66E0FF),
+    shadow: Color = Color(0xFF000000),
+    highlight: Color = Color(0xFFFFCC00),
     amount: Float = 1f,
     contrast: Float = 1.15f,
 ): Modifier = agslEffect(DuotoneProgram, animated = false) {

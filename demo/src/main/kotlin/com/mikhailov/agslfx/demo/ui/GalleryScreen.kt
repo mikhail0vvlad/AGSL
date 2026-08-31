@@ -80,7 +80,7 @@ private fun GalleryHeader() {
             Modifier
                 .fillMaxWidth()
                 .clip(RoundedCornerShape(24.dp))
-                .background(Color(0xFF0C0F1C))
+                .background(Color(0xFF141414))
                 .animatedBorder(cornerRadius = 24.dp, width = 1.5.dp, glow = 0.5f, speed = 0.7f)
                 .padding(20.dp)
         ) {
@@ -94,7 +94,7 @@ private fun GalleryHeader() {
                 Text(
                     text = "Библиотека шейдерных эффектов для Jetpack Compose.\n" +
                         "${DemoCatalog.size} эффектов, всё на AGSL, без единого drawable.",
-                    color = Color(0xFF9AA3BD),
+                    color = Color(0xFF8C8C8C),
                     fontSize = 13.sp,
                     modifier = Modifier.padding(top = 6.dp),
                 )
