@@ -51,6 +51,12 @@ jobs:
       - name: Юнит-тесты
         run: ./gradlew :agslfx:testDebugUnitTest
 
+      # Задача с тестами приходит FROM-CACHE, и в логе остаётся одно
+      # BUILD SUCCESSFUL. Проверяем по отчётам, что тесты вправду были.
+      - name: Сводка по тестам
+        if: always()
+        run: python tools/test_summary.py
+
       - name: Сборка библиотеки и демо
         run: ./gradlew :agslfx:assembleDebug :demo:assembleDebug
 
