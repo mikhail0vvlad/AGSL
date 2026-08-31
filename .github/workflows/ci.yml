@@ -42,6 +42,8 @@ jobs:
         env:
           PYTHONIOENCODING: utf-8
         run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y -qq libgl1 libglu1-mesa libegl1
           python -m pip install --upgrade pip
           python -m pip install skia-python
           python tools/validate_agsl.py

@@ -18,8 +18,11 @@ import sys
 
 try:
     import skia
-except ImportError:
-    sys.exit("нужен skia-python:  pip install skia-python")
+except ImportError as error:
+    sys.exit(f"""не удалось импортировать skia-python: {error}
+  pip install skia-python
+  на Linux дополнительно нужны системные библиотеки OpenGL:
+  sudo apt-get install -y libgl1 libglu1-mesa libegl1""")
 
 ROOT = pathlib.Path(__file__).resolve().parent.parent
 SRC = ROOT / "agslfx" / "src" / "main" / "kotlin"
