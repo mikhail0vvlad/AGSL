@@ -80,11 +80,11 @@ def sample_artwork(size):
         try:
             mark = skia.Font(skia.Typeface.MakeFromName("DejaVu Sans", skia.FontStyle.Bold()), size * 0.16)
             caption = skia.Font(skia.Typeface.MakeFromName("DejaVu Sans", skia.FontStyle.Normal()), size * 0.045)
-            canvas.drawTextBlob(skia.TextBlob("Y&&Y", mark),
-                                (size - mark.measureText("Y&&Y")) / 2, size * 0.54,
+            canvas.drawTextBlob(skia.TextBlob("AGSL", mark),
+                                (size - mark.measureText("AGSL")) / 2, size * 0.54,
                                 skia.Paint(Color=0xFFFFFFFF))
-            canvas.drawTextBlob(skia.TextBlob("YOUNG && YANDEX", caption),
-                                (size - caption.measureText("YOUNG && YANDEX")) / 2, size * 0.60,
+            canvas.drawTextBlob(skia.TextBlob("SAMPLE ARTWORK", caption),
+                                (size - caption.measureText("SAMPLE ARTWORK")) / 2, size * 0.60,
                                 skia.Paint(Color=0xD9FFFFFF))
         except Exception:  # шрифта может не быть — превью останется без подписи
             pass

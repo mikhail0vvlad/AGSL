@@ -66,14 +66,14 @@ fun SampleArtwork(modifier: Modifier = Modifier) {
             verticalArrangement = Arrangement.spacedBy(2.dp),
         ) {
             Text(
-                text = "Y&&Y",
+                text = "AGSL",
                 color = Color.White,
                 fontSize = 44.sp,
                 fontWeight = FontWeight.Black,
                 fontFamily = FontFamily.SansSerif,
             )
             Text(
-                text = "YOUNG && YANDEX",
+                text = "SAMPLE ARTWORK",
                 color = Color.White.copy(alpha = 0.85f),
                 fontSize = 12.sp,
                 textAlign = TextAlign.Center,
